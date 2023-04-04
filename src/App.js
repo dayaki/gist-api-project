@@ -8,6 +8,7 @@ const App = () => {
     <Wrapper className="App" data-testid="app">
       <Header />
       <Gist />
+      <Gist />
       <GlobalStyles />
     </Wrapper>
   );
