@@ -1,29 +1,47 @@
 import styled from "styled-components";
+import Octicon from "react-octicon";
+import moment from "moment";
 
 const Gist = ({ gist }) => (
   <Wrapper>
     <UserHeader>
       <UserProfile>
-        <UserAvatar src="https://api.lorem.space/image/face?w=150&h=150" />
-        <UserName>Dayo Akins</UserName>
+        <UserAvatar src={gist.owner?.avatar_url} />
+        <UserName>{gist.owner?.login}</UserName>
       </UserProfile>
       <QuickLinks>
-        <QuickLink href="#">1 Files</QuickLink>
-        <QuickLink href="#">Forks</QuickLink>
-        <QuickLink href="#">Comments</QuickLink>
-        <QuickLink href="#"> Stars</QuickLink>
+        <QuickLink href={gist.commits_url}>
+          <Octicon name="chevron-left" />
+          <Octicon name="chevron-right" /> {gist.files?.length} Files
+        </QuickLink>
+        <QuickLink href={gist.forks_url}>
+          <Octicon name="repo-forked" /> Forks
+        </QuickLink>
+        <QuickLink href={gist.comments_url}>
+          <Octicon name="comment" /> Comments
+        </QuickLink>
+        <QuickLink href={gist.url}>
+          <Octicon name="star" /> Stars
+        </QuickLink>
       </QuickLinks>
     </UserHeader>
     <Status>
-      <DateLabel>Created at: 11/20/2023</DateLabel>
-      <DateLabel>Last updated: 11/20/2023</DateLabel>
+      <DateLabel>
+        Created at: {moment(gist.created_at).format("DD/MM/YYYY")}
+      </DateLabel>
+      <DateLabel>
+        Last updated: {moment(gist.updated_at).format("DD/MM/YYYY")}
+      </DateLabel>
     </Status>
     <Content>
-      <TextContent>lorem </TextContent>
+      <TextContent>{gist.description}</TextContent>
     </Content>
     <Files>
-      <FileItem>Machine.js</FileItem>
-      <FileItem>Output.js</FileItem>
+      {Object.keys(gist.files).map((keyName, i) => (
+        <FileItem>
+          <Octicon name="file-text" /> {gist.files[keyName].filename}
+        </FileItem>
+      ))}
     </Files>
   </Wrapper>
 );
@@ -33,7 +51,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   padding: 10px 20px;
   padding-bottom: 50px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   border-bottom: 1px solid rgba(212, 212, 212, 0.5);
 `;
 const UserHeader = styled.div`
