@@ -7,7 +7,7 @@ const Gist = ({ gist }) => (
     <UserHeader>
       <UserProfile>
         <UserAvatar src={gist.owner?.avatar_url} />
-        <UserName>{gist.owner?.login}</UserName>
+        <UserName href={gist.owner?.html_url}>{gist.owner?.login}</UserName>
       </UserProfile>
       <QuickLinks>
         <QuickLink href={gist.commits_url}>
@@ -38,7 +38,7 @@ const Gist = ({ gist }) => (
     </Content>
     <Files>
       {Object.keys(gist.files).map((keyName, i) => (
-        <FileItem key={i}>
+        <FileItem key={i} href={gist.files[keyName].raw_url}>
           <Octicon name="file-text" /> {gist.files[keyName].filename}
         </FileItem>
       ))}
@@ -69,10 +69,11 @@ const UserAvatar = styled.img`
   border-radius: 15px;
   margin-right: 10px;
 `;
-const UserName = styled.p`
+const UserName = styled.a`
   font-size: 12px;
   color: #528aeb;
   font-weight: 500;
+  text-decoration: none;
 `;
 const QuickLinks = styled.div`
   display: flex;
@@ -102,6 +103,7 @@ const Files = styled.div`
 const FileItem = styled.a`
   margin-right: 20px;
   color: #528aeb;
+  text-decoration: none;
 `;
 
 export default Gist;
