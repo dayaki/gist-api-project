@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Octicon from "react-octicon";
 import { useDispatch, useSelector } from "react-redux";
-import { addToResult, updateSearch } from "../store/appSlice";
+import {
+  addToResult,
+  updateSearch,
+  updateSearchStatus,
+} from "../store/appSlice";
 import { getGistForUser } from "../services/gistService";
 
 const Search = () => {
@@ -10,12 +14,22 @@ const Search = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const dispatch = useDispatch();
 
+  // store input and reset search status if empty
+  const handleInput = (event) => {
+    const text = event.target.value;
+    setSearchTerm(text);
+    if (text === "") {
+      dispatch(updateSearchStatus(false));
+    }
+  };
+
   const searchQueryHandler = (event) => {
     if (event.key === "Enter") {
       dispatch(updateSearch(searchTerm));
       const temp = searchHistory.find((elem) => elem === searchTerm);
       if (!temp) {
         searchGithub();
+      } else {
       }
     }
   };
@@ -33,7 +47,7 @@ const Search = () => {
         <Octicon name="search" />
         <Input
           placeholder="Search Gists for the username"
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleInput}
           onKeyDown={searchQueryHandler}
           value={searchTerm}
         />
