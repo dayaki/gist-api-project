@@ -4,28 +4,39 @@ import { useSelector } from "react-redux";
 import Gist from "./Gist";
 
 const GistList = () => {
-  const { currentUsername, activeSearch } = useSelector((state) => state.app);
+  const { currentUsername, activeSearch, isLoading } = useSelector(
+    (state) => state.app
+  );
   const searchResults =
     useSelector((state) => state.app.searchResults[currentUsername]) || [];
+  console.log("searchResults", searchResults);
 
   return (
     <>
-      {activeSearch ? (
-        searchResults && searchResults.length > 0 ? (
-          searchResults.map((result, index) => (
-            <Gist gist={result} key={index} />
-          ))
-        ) : (
-          <NoContent>
-            <NoContentText>
-              User has not gist yet, try searching for another user.
-            </NoContentText>
-          </NoContent>
-        )
-      ) : (
+      {isLoading ? (
         <NoContent>
-          <NoContentText>Search to see a user gist files.</NoContentText>
+          <NoContentText>Searching...</NoContentText>
         </NoContent>
+      ) : (
+        <>
+          {activeSearch ? (
+            searchResults && searchResults.length > 0 ? (
+              searchResults.map((result, index) => (
+                <Gist gist={result} key={index} />
+              ))
+            ) : (
+              <NoContent>
+                <NoContentText>
+                  User has not gist yet, try searching for another user.
+                </NoContentText>
+              </NoContent>
+            )
+          ) : (
+            <NoContent>
+              <NoContentText>Search to see a user gist files.</NoContentText>
+            </NoContent>
+          )}
+        </>
       )}
     </>
   );

@@ -6,6 +6,7 @@ import {
   addToResult,
   updateSearch,
   updateSearchStatus,
+  updateLoadingStatus,
 } from "../store/appSlice";
 import { getGistForUser } from "../services/gistService";
 
@@ -28,8 +29,8 @@ const Search = () => {
       dispatch(updateSearch(searchTerm));
       const temp = searchHistory.find((elem) => elem === searchTerm);
       if (!temp) {
+        dispatch(updateLoadingStatus(true));
         searchGithub();
-      } else {
       }
     }
   };

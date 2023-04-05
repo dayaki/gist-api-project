@@ -38,7 +38,7 @@ const Gist = ({ gist }) => (
     </Content>
     <Files>
       {Object.keys(gist.files).map((keyName, i) => (
-        <FileItem>
+        <FileItem key={i}>
           <Octicon name="file-text" /> {gist.files[keyName].filename}
         </FileItem>
       ))}
